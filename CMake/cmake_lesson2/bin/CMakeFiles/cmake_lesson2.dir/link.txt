@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/cmake_lesson2.dir/main.c.o CMakeFiles/cmake_lesson2.dir/hello.c.o  -o cmake_lesson2 

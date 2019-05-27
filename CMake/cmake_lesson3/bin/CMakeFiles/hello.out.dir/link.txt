@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/hello.out.dir/main.c.o  -o hello.out -Wl,-rpath,/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson3/bin libhello.dylib 

@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/hello.out.dir/main.c.o  -o ../bin/hello.out ../lib/libhello.a 

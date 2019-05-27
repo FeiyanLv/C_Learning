@@ -1,0 +1,4 @@
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson3/bin/CMakeFiles/rebuild_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson3/bin/CMakeFiles/edit_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson3/bin/CMakeFiles/hello.out.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson3/bin/CMakeFiles/libhello.dir

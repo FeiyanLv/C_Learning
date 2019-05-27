@@ -1,0 +1,8 @@
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/src/CMakeFiles/rebuild_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/src/CMakeFiles/edit_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/src/CMakeFiles/hello.out.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/lib/CMakeFiles/rebuild_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/lib/CMakeFiles/edit_cache.dir
+/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson6/cmake-build-debug/lib/CMakeFiles/libhello.dir
