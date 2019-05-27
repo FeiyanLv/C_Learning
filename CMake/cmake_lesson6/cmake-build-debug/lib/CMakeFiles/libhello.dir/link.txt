@@ -1,1 +1,0 @@
-/usr/local/Cellar/gcc/9.1.0/bin/gcc-9 -g -dynamiclib -Wl,-headerpad_max_install_names  -o libhello.dylib -install_name @rpath/libhello.dylib CMakeFiles/libhello.dir/hello.c.o 
