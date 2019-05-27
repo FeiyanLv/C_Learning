@@ -1,3 +1,0 @@
-/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson2/bin/CMakeFiles/rebuild_cache.dir
-/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson2/bin/CMakeFiles/edit_cache.dir
-/Users/liuxing1/CodeFiles/C/C_Learning/cmake_lesson2/bin/CMakeFiles/cmake_lesson2.dir
