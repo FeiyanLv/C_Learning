@@ -2,14 +2,19 @@
 // Created by liuxing1 on 5/28/19.
 //
 
-#ifndef ECHO_STREAM_IO_N_H
-#define ECHO_STREAM_IO_N_H
+#ifndef ECHO_STREAM_BUF_HANDLER_H
+#define ECHO_STREAM_BUF_HANDLER_H
 
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>//read(),write()
 
+
+typedef struct packet{
+    int len;
+    char buf[1024];
+}pack;
 
 /* read()函数的封装
  * fd       参数fd指待传输文件STDIN等
@@ -29,4 +34,4 @@ ssize_t readn(int fd, void *buf,size_t count);
  */
 ssize_t writen(int fd, void *buf,size_t count);
 
-#endif //ECHO_STREAM_IO_N_H
+#endif //ECHO_STREAM_BUF_HANDLER_H
