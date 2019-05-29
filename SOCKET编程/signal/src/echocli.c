@@ -86,6 +86,8 @@ void start() {
     while (1) {
         FD_SET(fd_stdin, &rset);    //将描述符加入到rset
         FD_SET(sock, &rset);        //不可外置，因为rset会在select()中变更为发生了事件的文件描述符，所以要重新添加到集合当中
+
+        //maxfd+1的原因是select()遍历文件描述符的区间是[0,maxfd+1)
         nready = select(maxfd + 1, &rset, NULL, NULL, NULL);//timeout填NULL,表示不会超时，直到有事件到来才会返回
         if (nready == -1)
             ERR_EXIT("select");
