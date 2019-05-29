@@ -113,6 +113,7 @@ void start() {
             if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL)
                 break;
             writen(sock, sendbuf, strlen(sendbuf));
+            memset(sendbuf, 0, sizeof(sendbuf));
         }
     }
     close(sock);
