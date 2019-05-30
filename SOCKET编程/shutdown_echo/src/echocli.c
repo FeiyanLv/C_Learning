@@ -17,8 +17,6 @@ int main(void) {
 }
 
 void init() {
-    signal(SIGPIPE, SIG_IGN);
-
     //第一步：创建一个套接字socket(协议族，套接字类型，协议类型常量或0
     if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
         ERR_EXIT("socket");
@@ -112,10 +110,14 @@ void start() {
         //如果标准输入检测到了可读事件，那么进行对应的IO操作
         if (FD_ISSET(fd_stdin, &rset)) {
             //如果为null指客户端得到了一个EOF(结束符)，则break出循环，否则将从标准输入获取到的一行数据发送给服务器端
-            if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL)
-                break;
-            writen(sock, sendbuf, strlen(sendbuf));
-            memset(sendbuf, 0, sizeof(sendbuf));
+            if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL) {
+                close(sock);
+                sleep(5);
+                exit(EXIT_FAILURE);
+            } else {
+                writen(sock, sendbuf, strlen(sendbuf));
+                memset(sendbuf, 0, sizeof(sendbuf));
+            }
         }
     }
     close(sock);

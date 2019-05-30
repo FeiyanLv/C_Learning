@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.2)
-project(socket_lesson6-9 C)
+project(socket_lesson10 C)
 
 set(CMAKE_C_STANDARD 99)
 

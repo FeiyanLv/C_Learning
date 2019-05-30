@@ -7,6 +7,8 @@ void start();
 
 void handler_sigchld(int sig);
 
+void handler_sigpipe(int sig);
+
 int main(void) {
     start();
     return 0;
@@ -14,8 +16,12 @@ int main(void) {
 
 void start() {
 
-//    signal(SIGCHLD, SIG_IGN);
-    signal(SIGCHLD, handler_sigchld);
+//  signal(SIGCHLD, SIG_IGN);
+//  signal(SIGCHLD, handler_sigchld);
+//  signal(SIGPIPE, SIG_IGN);
+    signal(SIGPIPE, handler_sigpipe);
+
+
     //第一步：创建一个套接字socket(协议族，套接字类型，协议类型常量或0
     int listenfd;
     if ((listenfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
@@ -117,7 +123,8 @@ void start() {
             if (--nready <= 0)              //说明我们检测到的事件（此处代表检测到listenfd中有可读事件发生）已经处理完了，
                 continue;                   //因为此时nready<=0了，代表无conn产生可读事件，此时应当继续进行监听，没有必要进行以下代码了
         }
-        for (i = 0; i < maxindex; ++i) {        //因为不清楚，有效的conn保存在client数组的哪个位置，所以要完全遍历整个client数组，并不是conn统一保存在前nready个位置中(加入maxindex后，则遍历到最大不空闲位置即可)
+        for (i = 0; i <=
+                    maxindex; ++i) {        //因为不清楚，有效的conn保存在client数组的哪个位置，所以要完全遍历整个client数组，并不是conn统一保存在前nready个位置中(加入maxindex后，则遍历到最大不空闲位置即可)
             conn = client[i];
             if (conn == -1)                 //表示该位置空闲
                 continue;
@@ -132,6 +139,7 @@ void start() {
                     client[i] = -1;         //并将其从client数组中清除，对应位置置为-1
                 }
                 fputs(recvbuf, stdout);     //先将接收到的recvbuf发送到标准输出
+                sleep(4);                   //等待4秒后再回射
                 writen(conn, recvbuf, strlen(recvbuf));             //然后将recvbuf回射回去
 
                 if (--nready <= 0)          //处理完一个conn后nready要减一，代表处理完一个事件
@@ -143,4 +151,8 @@ void start() {
 
 void handler_sigchld(int sig) {
     wait(NULL);
+}
+
+void handler_sigpipe(int sig) {
+    printf("recv a sig = %d\n", sig);
 }
