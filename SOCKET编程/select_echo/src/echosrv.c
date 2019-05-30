@@ -117,7 +117,7 @@ void start() {
             if (--nready <= 0)              //说明我们检测到的事件（此处代表检测到listenfd中有可读事件发生）已经处理完了，
                 continue;                   //因为此时nready<=0了，代表无conn产生可读事件，此时应当继续进行监听，没有必要进行以下代码了
         }
-        for (i = 0; i < maxindex; ++i) {        //因为不清楚，有效的conn保存在client数组的哪个位置，所以要完全遍历整个client数组，并不是conn统一保存在前nready个位置中(加入maxindex后，则遍历到最大不空闲位置即可)
+        for (i = 0; i <= maxindex; ++i) {        //因为不清楚，有效的conn保存在client数组的哪个位置，所以要完全遍历整个client数组，并不是conn统一保存在前nready个位置中(加入maxindex后，则遍历到最大不空闲位置即可)
             conn = client[i];
             if (conn == -1)                 //表示该位置空闲
                 continue;
