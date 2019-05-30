@@ -81,12 +81,12 @@ void start() {
         rset = allset;      //监听套接口先赋值给了allset，然后再赋值给rset
         nready = select(maxfd + 1, &rset, NULL, NULL, NULL);//这里只关心可读集合
         if (nready == -1) { //监测到的事件数nready为-1时，表示出错
-            if (errno == EINTR)             // errno出错码为EINTR代表被信号中断，select()无法重启继续监听
-                continue;                   // continue续循环回来，继续监听
+            if (errno == EINTR) // errno出错码为EINTR代表被信号中断，select()无法重启继续监听
+                continue;       // continue续循环回来，继续监听
             ERR_EXIT("select");
-        }
-        if (0 == nready)    //超时的时候nready会等于0，时间到了还未监测到事件发生，此时未设置超时时间不太可能为0
+        } else if (0 == nready) //超时的时候nready会等于0，时间到了还未监测到事件发生，此时未设置超时时间不太可能为0
             continue;
+
         //运行到这里，代表nready大于1，代表有可读事件发生，首个循环中代表监听套接口发生了事件
         if (FD_ISSET(listenfd, &rset)) {    //代表监听套接字有可读事件，有客户端发起连接请求三次握手已经成功了，connect()成功，已完成连接队列中条目不为空，需要进行处理
             peerlen = sizeof(peeraddr);     //一定要有初始值，是输入输出参数，要有初始值才可以返回出所需值
@@ -117,8 +117,7 @@ void start() {
             if (--nready <= 0)              //说明我们检测到的事件（此处代表检测到listenfd中有可读事件发生）已经处理完了，
                 continue;                   //因为此时nready<=0了，代表无conn产生可读事件，此时应当继续进行监听，没有必要进行以下代码了
         }
-        for (i = 0; i <
-                    maxindex; ++i) {        //因为不清楚，有效的conn保存在client数组的哪个位置，所以要完全遍历整个client数组，并不是conn统一保存在前nready个位置中(加入maxindex后，则遍历到最大不空闲位置即可)
+        for (i = 0; i < maxindex; ++i) {        //因为不清楚，有效的conn保存在client数组的哪个位置，所以要完全遍历整个client数组，并不是conn统一保存在前nready个位置中(加入maxindex后，则遍历到最大不空闲位置即可)
             conn = client[i];
             if (conn == -1)                 //表示该位置空闲
                 continue;
