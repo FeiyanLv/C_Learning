@@ -71,6 +71,7 @@ void start() {
     int fd_stdin = fileno(stdin);/* fileno()转化文件描述符
                                   * STD_FILENO等于0,不能保证标准输入stdio是否被重定向，
                                   * 如果被重定向后，有可能stdio的文件描述符并不是0     */
+    int stdineof = 0;       //添加stdin标记变量，避免关闭套接字写入方向后，仍然加入到rset当中了
     //确定文件描述符的集合中的最大值
     if (fd_stdin > sock)
         maxfd = fd_stdin;
@@ -82,7 +83,9 @@ void start() {
 
     //死循环检测IO可读集合r(ead)set是否产生了可读事件
     while (1) {
-        FD_SET(fd_stdin, &rset);    //将描述符加入到rset
+        if (0 == stdineof) {//如果标准输入文件描述符关闭标记置1了，表示客户端已经关闭了套接字的写入方向
+            FD_SET(fd_stdin, &rset);//将描述符加入到rset
+        }
         FD_SET(sock, &rset);        //不可外置，因为rset会在select()中变更为发生了事件的文件描述符，所以要重新添加到集合当中
 
         //maxfd+1的原因是select()遍历文件描述符的区间是[0,maxfd+1)
@@ -111,14 +114,19 @@ void start() {
         if (FD_ISSET(fd_stdin, &rset)) {
             //如果为null指客户端得到了一个EOF(结束符)，则break出循环，否则将从标准输入获取到的一行数据发送给服务器端
             if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL) {
+                /*
                 close(sock);
                 sleep(5);
                 exit(EXIT_FAILURE);
+                 */
+                //shutdown()发送FIN报文段，通知服务器数据发送完毕，并关闭了可写管道，等服务器将数据回溯完毕后，再通知客户端关闭可读管道
+                shutdown(sock, SHUT_WR);
+                //关闭套接字可读方向后，应该禁止程序继续将stdin加入到select()当中进行检测，故添加
+                stdineof = 1;
             } else {
                 writen(sock, sendbuf, strlen(sendbuf));
                 memset(sendbuf, 0, sizeof(sendbuf));
             }
         }
     }
-    close(sock);
 }

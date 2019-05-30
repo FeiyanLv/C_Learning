@@ -137,6 +137,7 @@ void start() {
                     printf("client close\n");
                     FD_CLR(conn, &allset);  //将conn从allset中移除，代表它断开连接，不再关注其可读事件
                     client[i] = -1;         //并将其从client数组中清除，对应位置置为-1
+                    close(conn);            //通知客户端彻底关闭套接口，避免客户端还保留可读管道
                 }
                 fputs(recvbuf, stdout);     //先将接收到的recvbuf发送到标准输出
                 sleep(4);                   //等待4秒后再回射
