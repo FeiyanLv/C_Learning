@@ -2,4 +2,4 @@
 bin/
 .idea/
 cmake-build-debug/
-
+Release/
