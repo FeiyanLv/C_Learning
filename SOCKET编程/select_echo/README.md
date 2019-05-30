@@ -29,3 +29,33 @@
 ## 异常
 
 - 套接口存在带外数据
+
+
+# select限制
+
+>用select()实现的并发服务器，能达到的并发数，受两方面限制
+
+- 一个进程能打开的最大文件描述符个数限制（这可以通过调整内核参数来改变）
+```bash
+$ulimit -n
+1024
+$sudo ulimit -n 2048    //修改个数限制
+```
+
+```c
+// 程序获取最大文件描述符个数限制
+struct rlimit rl;
+if (getrlimit(RLIMIT_NOFILE, &rl) < 0)
+    ERR_EXIT("getrlimit");
+printf("%d\n", rl.rlim_max);
+
+// 程序设置最大文件描述符个数（只是更改当前进程的最大文件描述符个数）
+rl.rlim_cur = 2048;
+rl.rlim_max = 2048;
+if (setrlimit(RLIMIT_NOFILE, &rl) < 0)
+    ERR_EXIT("setrlimit");
+```
+
+- select()中的fd_set集合容量的限制(FD_SETSIZE)（这需要重新编译内核）
+
+FD_SETSIZE在头文件宏定义中定义为1024，修改只能修改宏定义，并重新编译内核
