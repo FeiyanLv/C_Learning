@@ -2,8 +2,8 @@
 // Created by liuxing1 on 5/31/19.
 //
 
-#ifndef SOCKET_LESSON6_UDP_ECHO_H
-#define SOCKET_LESSON6_UDP_ECHO_H
+#ifndef SOCKET_LESSON6_UDP_CHATROOM_H
+#define SOCKET_LESSON6_UDP_CHATROOM_H
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -21,4 +21,6 @@
             exit(EXIT_FAILURE); \
         } while(0)
 
-#endif //SOCKET_LESSON6_UDP_ECHO_H
+
+
+#endif //SOCKET_LESSON6_UDP_CHATROOM_H
