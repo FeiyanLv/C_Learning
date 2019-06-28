@@ -1,7 +1,7 @@
-project(Systemv_SharedMemory C)
+project(SystemV_SharedMemory C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(mmap_write.out src/write/mmap_write.c)
+add_executable(Write.out src/write/shm_write.c)
 
-add_executable(mmap_read.out src/read/mmap_read.c)
+add_executable(Read.out src/read/shm_read.c)

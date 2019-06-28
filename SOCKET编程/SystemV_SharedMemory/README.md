@@ -1,49 +1,57 @@
-# 共享内存
-共享内存是最快的IPC形式。一旦这样的内存映射到共享它的进程的地址空间，这些进程间数据传递不再涉及到内核，换句话说是进程不再通过执行进入内核的系统调用来传递彼此的数据。
+# 共享内存数据结构
+![](http://ww4.sinaimg.cn/large/006tNc79gy1g4gz6yyif1j31kc0te7tn.jpg)
 
-# 共享内存示意图
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4eoqtgoa4j31af0u0nay.jpg)
 
-# 管道/消息队列/共享内存对比
-更少调用内核，更多地使用内存操作函数
+# 共享内存函数
+```c
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
-# mmap函数
-- 功能：将文件或者设备空间映射到共享内存区
-- 原型：
-    - void *mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+int shmget(key_t key, size_t size, int shmflg);
+/******************************************************
+- 功能：用来创建共享内存
 - 参数：
-    - addr:     要映射的起始地址，通常指定为NULL，让内核自动选择
-    - len:      映射到进程地址空间的字节数
-    - prot:     映射区保护方式
-    - flags:    标志
-    - fd:       文件描述符
-    - offset:   从文件头开始的偏移量
-- 返回值：成功返回映射到的内存区的起始地址；失败返回-1。
+    - key:这个共享内存段的名字
+    - size:共享内存大小
+    - shmflg:由九个权限标志构成，它们的用法和创建文件时使用的mode模式标志是一样的
+- 返回值：成功返回一个非负整数，即该共享内存段的标识码；失败返回-1。
+*******************************************************/
 
-![](http://ww4.sinaimg.cn/large/006tNc79gy1g4ep3ivzryj318v0u0nek.jpg)
-
-# munmap函数
-- 功能：取消mmap函数建立的映射
-- 原型：
-    - int munmap(void *addr, size_t len);
+void *shmat(int shmid, const void *shmaddr, int shmflg);
+/******************************************************
+- 功能：将共享内存段连接到进程地址空间
 - 参数：
-    - addr:映射的内存起始地址
-    - len:映射到进程地址空间的字节数
+    - shmid:共享内存标识
+    - shmaddr:指定连接的地址
+    - shmflg:它的两个可能取值是SHM_RND和SHM_RDONLY
+- 返回值：成功返回一个指针，指向共享内存第一个节；失败返回-1。
+- 备注：
+    - shmaddr为NULL，核心自动选择一个地址
+    - shmaddr不为NULL且shmflg无SHM_RND标记，则以shmaddr为连接地址
+    - shmaddr不为NULL且shmflg设置了SHM_RND标记，则连接的地址会自动向下调整为SHMLBA的整数倍。公式：shmaddr-(shmaddr % SHMLBA)
+    - shmflg = SHM_RDONLY，表示连接操作用来只读共享内存
+*******************************************************/
+
+int shmdt(const void *shmaddr);
+/******************************************************
+- 功能：将共享内存与当前进程脱离
+- 参数：
+    - shmaddr:由shmat所返回的指针
 - 返回值：成功返回0；失败返回-1。
+- 备注：将共享内存段与当前进程脱离不等于删除共享内存段
+*******************************************************/
 
-# msync函数
-- 功能：对映射的共享内存执行同步操作
-- 原型：
-    - int msync(void *addr, size_t len, int flags);
+int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+/******************************************************
+- 功能：控制操作共享内存
 - 参数：
-    - addr:内存起始地址
-    - len:长度
-    - flags:选项
+    - shmid:由shmget返回的共享内存标识码
+    - cmd:将要采取的动作（有三个可取值）
+    - buf:指向一个保存着共享内存的模式状态和访问权限的数据结构
 - 返回值：成功返回0；失败返回-1。
+*******************************************************/
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4fnt692hwj31dy0ek47c.jpg)
+```
+![](http://ww1.sinaimg.cn/large/006tNc79gy1g4h1eirfzej31pg0k4qif.jpg)
 
-# map注意点
-- 映射不能改变文件大小
-- 可用于进程间通信的有效地址空间不完全受限于被映射文件的大小
-- 文件一旦被映射后，所有对映射区域的访问实际上是对内存区域的访问。映射区域内容写回文件时，所写内容不能超过文件的大小。
+# 共享内存示例
