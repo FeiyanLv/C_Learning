@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
 //  第二步：从文件开头处，开始定位cfo（读写指针），定位到39个字节的位置，最后写入一个字节“”空字符，此时文件为40个字节，创建一个空洞文件
     lseek(fd, sizeof(student) * 5 - 1, SEEK_SET);
     write(fd, "", 1);
-
     printf("file len:%lld\n", lseek(fd, 0, SEEK_END));    //获取文件长度
 
 /*  ls -l <file>    可以查看文件字节数等信息

@@ -1,4 +1,4 @@
-project(Shared_Memory C)
+project(Systemv_SharedMemory C)
 
 set(CMAKE_C_STANDARD 99)
 
