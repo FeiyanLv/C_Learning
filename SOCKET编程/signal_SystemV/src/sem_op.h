@@ -23,6 +23,13 @@
     exit(EXIT_FAILURE);\
 } while(0)
 
+//union semun {
+//    int val;
+//    struct semid_ds *buf;
+//    unsigned short *array;
+//    struct seminfo *_buf;
+//};
+
 //创建一个信号量集
 int sem_create(key_t key) {
     int semid = semget(key, 1, IPC_CREAT | IPC_EXCL | 0666);
