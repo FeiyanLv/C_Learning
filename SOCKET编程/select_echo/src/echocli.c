@@ -63,7 +63,7 @@ void init() {
 void start() {
     //第四步：前者未连接套接字变成已连接状态，通过其进行通信
 
-    //select统一管理标准输入IO和套接口IO
+    //select统一管理标准输入输出IO和套接口IO
 
     fd_set rset;            //定义一个IO集合出来
     FD_ZERO(&rset);         //将这个集合清空
@@ -82,7 +82,7 @@ void start() {
     char sendbuf[1024] = {0};
     char recvbuf[1024] = {0};
 
-    //死循环检测IO可读集合r(ead)set是否产生了可读事件
+    //死循环，循环检测IO可读集合rset是否产生了可读事件
     while (1) {
         FD_SET(fd_stdin, &rset);    //将描述符加入到rset
         FD_SET(sock, &rset);        //不可外置，因为rset会在select()中变更为发生了事件的文件描述符，所以要重新添加到集合当中
